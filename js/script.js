@@ -13,9 +13,14 @@ class Point {
 
         return counter;
     }
+
+    getClone() {
+        if (this.getCoordinates() == 2) return new Point([this.x1, this.x2]);
+        else return new Point([this.x1, this.x2, this.x3, this.x4]);
+    }
 }
 
-function RosenbrockFunction(p) {
+function rosenbrockFunction(p) {
     return 100 * Math.pow((Math.pow(p.x1, 2) - p.x2), 2) + Math.pow((1 - p.x1), 2);
 }
 
@@ -30,6 +35,7 @@ function four(p) {
 let list = document.getElementsByTagName('ul');
 let tests = document.getElementsByName('test');
 let currentTest = document.querySelector('input[name="test"]:checked').value;
+
 tests.forEach(function (test) {
     test.addEventListener('change', function () {
         currentTest = test.value;
@@ -72,6 +78,25 @@ tests.forEach(function (test) {
                 list[1].children[5].children[0].value = "2.3";
                 list[1].children[6].children[0].value = "0.1";
                 break;
+
+            case "limit":
+                list[0].children[0].innerHTML = "X<sup>0</sup> = (-1.2, 1)";
+                list[0].children[1].children[1].value = "1";
+                list[0].children[2].children[1].value = "1";
+                list[0].children[3].children[1].value = "0";
+                list[0].children[4].children[1].value = "0";
+                list[0].children[5].children[0].value = "0.1";
+                list[0].children[6].children[0].value = "2";
+                list[0].children[7].children[0].value = "1";
+
+                list[1].children[0].innerHTML = "X<sup>0</sup> = (-1.2, 1)";
+                list[1].children[1].innerHTML = "X<sup>0</sup> = (-0.2, 1)";
+                list[1].children[2].innerHTML = "X<sup>0</sup> = (-1.2, 2)";
+                list[1].children[3].children[0].value = "0.01";
+                list[1].children[4].children[0].value = "2";
+                list[1].children[5].children[0].value = "2.3";
+                list[1].children[6].children[0].value = "0.1";
+                break;
             
             case "coordinates":
                 list[0].children[0].innerHTML = "X<sup>0</sup> = (3, -1, 0, 1)";
@@ -83,9 +108,9 @@ tests.forEach(function (test) {
                 list[0].children[6].children[0].value = "2";
                 list[0].children[7].children[0].value = "1";
 
-                list[1].children[0].innerHTML = "X<sup>0</sup> = (-1.2, -1)";
-                list[1].children[1].innerHTML = "X<sup>0</sup> = (-0.2, 1)";
-                list[1].children[2].innerHTML = "X<sup>0</sup> = (-1.2, 0)";
+                list[1].children[0].innerHTML = "X<sup>0</sup> = (3, -1, 0, 1)";
+                list[1].children[1].innerHTML = "X<sup>0</sup> = (4, -1, 0, 1)";
+                list[1].children[2].innerHTML = "X<sup>0</sup> = (3, 0, 0, 1)";
                 list[1].children[3].children[0].value = "0.01";
                 list[1].children[4].children[0].value = "2";
                 list[1].children[5].children[0].value = "2.3";
@@ -108,7 +133,7 @@ HJstart.onclick = function () {
     switch (currentTest) {
         case "Rosenbrock":
             Xfirst = new Point([-1.2, 1]),
-            hooke_jeeves(RosenbrockFunction, Xfirst, [d1, d2], e, a, h);
+            hooke_jeeves(rosenbrockFunction, Xfirst, [d1, d2], e, a, h);
             break;
         case "somefunction":
             Xfirst = new Point([-1.2, -1]),
@@ -136,7 +161,7 @@ NMstart.onclick = function () {
     switch (currentTest) {
         case "Rosenbrock":
             startingPoints = [new Point([-1.2, 1]), new Point([-0.2, 1]), new Point([-1.2, 2])],
-            nelder_mead(RosenbrockFunction, startingPoints, e, a, b, g);
+            nelder_mead(rosenbrockFunction, startingPoints, e, a, b, g);
             break;
         case "somefunction":
             startingPoints = [new Point([-1.2, -1]), new Point([-0.2, 1]), new Point([-1.2, 0])],
@@ -216,18 +241,14 @@ function nelder_mead(f, X, eps, alpha, beta, gamma) {
     do {
         X.sort((p1, p2) => f(p1) - f(p2));
 
-        let bestPoint, goodPoint, worstPoint;
+        let bestPoint = X[0].getClone();
+            goodPoint = X[1].getClone();
+            worstPoint = X[2].getClone();
 
         if (coordinates == 2) {
-            bestPoint = new Point([X[0].x1, X[0].x2]);
-            goodPoint = new Point([X[1].x1, X[1].x2]);
-            worstPoint = new Point([X[2].x1, X[2].x2]);
             area.innerHTML += `X${step} = (${bestPoint.x1.toFixed(2)}, ${bestPoint.x2.toFixed(2)}) Q(X${step}) = ${f(bestPoint).toFixed(2)}\n`;
         }
         else {
-            bestPoint = new Point([X[0].x1, X[0].x2, X[0].x3, X[0].x4]);
-            goodPoint = new Point([X[1].x1, X[1].x2, X[1].x3, X[1].x4]);
-            worstPoint = new Point([X[2].x1, X[2].x2, X[2].x3, X[2].x4]);
             area.innerHTML += `X${step} = (${bestPoint.x1.toFixed(2)}, ${bestPoint.x2.toFixed(2)}, ${bestPoint.x3.toFixed(2)}, ${bestPoint.x4.toFixed(2)}) Q(X${step}) = ${f(bestPoint).toFixed(2)}\n`;
         }
 
@@ -236,7 +257,8 @@ function nelder_mead(f, X, eps, alpha, beta, gamma) {
 
         if (f(bestPoint) <= f(reflectedPoint) && f(reflectedPoint) <= f(goodPoint)) {
             worstPoint = reflectedPoint;
-            if (f(findCenterOfGravity(worstPoint, gravityCenter, coordinates)) < f(worstPoint)) worstPoint = findCenterOfGravity(worstPoint, gravityCenter, coordinates);
+            let newCenter = findCenterOfGravity(worstPoint, gravityCenter, coordinates);
+            if (f(newCenter) < f(worstPoint)) worstPoint = newCenter;
         }
 
         else if (f(reflectedPoint) < f(bestPoint)) worstPoint = stretching(f, reflectedPoint, gravityCenter, beta, coordinates);
@@ -274,8 +296,8 @@ function reflection(point, center, a) {
 }
 
 function stretching(func, point, center, b) {
-    let V = addition(center, multiplication(subtraction(point, center), b));
-    if (func(V) < func(point)) return V;
+    let stretchedPoint = addition(center, multiplication(subtraction(point, center), b));
+    if (func(stretchedPoint) < func(point)) return stretchedPoint;
     else return point;
 }
 
