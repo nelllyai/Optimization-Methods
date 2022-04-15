@@ -93,9 +93,9 @@ tests.forEach(function (test) {
                 list[1].children[1].innerHTML = "X<sup>0</sup> = (-0.2, 1)";
                 list[1].children[2].innerHTML = "X<sup>0</sup> = (-1.2, 2)";
                 list[1].children[3].children[0].value = "0.01";
-                list[1].children[4].children[0].value = "2";
-                list[1].children[5].children[0].value = "2.3";
-                list[1].children[6].children[0].value = "0.1";
+                list[1].children[4].children[0].value = "1";
+                list[1].children[5].children[0].value = "3";
+                list[1].children[6].children[0].value = "0.5";
                 break;
             
             case "coordinates":
@@ -112,9 +112,9 @@ tests.forEach(function (test) {
                 list[1].children[1].innerHTML = "X<sup>0</sup> = (4, -1, 0, 1)";
                 list[1].children[2].innerHTML = "X<sup>0</sup> = (3, 0, 0, 1)";
                 list[1].children[3].children[0].value = "0.01";
-                list[1].children[4].children[0].value = "2";
-                list[1].children[5].children[0].value = "2.3";
-                list[1].children[6].children[0].value = "0.1";
+                list[1].children[4].children[0].value = "1";
+                list[1].children[5].children[0].value = "2";
+                list[1].children[6].children[0].value = "0.5";
                 break;
         }
     })
@@ -141,7 +141,7 @@ HJstart.onclick = function () {
             break;
         case "limit":
             Xfirst = new Point([-1.2, 1]),
-            hooke_jeeves(fun, Xfirst, [d1, d2], e, a, h);
+            hooke_jeeves(fun, Xfirst, [d1, d2], e, a, h, [-1.2, 1, -1, 1]);
             break;
         case "coordinates":
             Xfirst =  new Point([3, -1, 0, 1]);
@@ -169,148 +169,46 @@ NMstart.onclick = function () {
             break;
         case "limit":
             startingPoints = [new Point([-1.2, 1]), new Point([-0.2, 1]), new Point([-1.2, 2])],
-            nelder_mead(fun, startingPoints, e, a, b, g);
+            nelder_mead(fun, startingPoints, e, a, b, g, [-1.2, 1, -1, 1]);
             break;
         case "coordinates":
             startingPoints = [new Point([3, -1, 0, 1]), new Point([4, -1, 0, 1]), new Point([3, 0, 0, 1])],
-            nelder_mead(fun, startingPoints, e, a, b, g);
+            nelder_mead(four, startingPoints, e, a, b, g);
             break;
     }
 }
 
-function hooke_jeeves(f, X, increments, eps, coef, L) {
-    let area = document.querySelector("textarea");
-    area.innerHTML = `Начало работы алгоритма\n\n`;
-
-    let error = 1, step = 1, coordinates = X.getCoordinates();
-
-    do {
-        if (coordinates == 2) area.innerHTML += `X${step} = (${X.x1.toFixed(3)}, ${X.x2.toFixed(3)}) Q${step} = ${f(X).toFixed(3)}\n`;
-        else area.innerHTML += `X${step} = (${X.x1.toFixed(3)}, ${X.x2.toFixed(3)}, ${X.x3.toFixed(3)}, ${X.x4.toFixed(3)}) Q${step} = ${f(X).toFixed(3)}\n`;
-
-        let mistake = 0, check = false;
-        let shiftByCoordinate = [];
-
-        for (let i = 0; i < coordinates; i++) {
-            shiftByCoordinate.push(exploratorySearch(f, X, increments[i], i + 1, coordinates));
-            if (shiftByCoordinate[i][`x${i + 1}`] == X[`x${i + 1}`]) mistake++;
-        }
-        if (mistake == coordinates) check = true;
-
-        if (check) {
-            let sum = 0;
-            for (let i = 0; i < coordinates; i++) sum += Math.pow(increments[0], 2);
-            error = Math.sqrt(sum);
-            for (let i = 0; i < coordinates; i++) increments[i] /= coef;
-            check = false;
-        }
-        else {
-            if (coordinates == 2) X = new Point([X.x1 + L * (shiftByCoordinate[0].x1 - X.x1), X.x2 + L * (shiftByCoordinate[1].x2 - X.x2)]);
-            else X = new Point([X.x1 + L * (shiftByCoordinate[0].x1 - X.x1), X.x2 + L * (shiftByCoordinate[1].x2 - X.x2),
-                                X.x3 + L * (shiftByCoordinate[2].x3 - X.x3), X.x4 + L * (shiftByCoordinate[3].x4 - X.x4)]);
-        }
-
-        step++;
-    } while (error > eps && step <= 100);
-
-    if (step == 101) area.innerHTML += `\nСчетчик достиг максимума в 100 шагов. Вероятно, алгоритм расходится.`;
-    if (increments.length == 2) area.innerHTML += `\nX* = (${X.x1.toFixed(3)}, ${X.x2.toFixed(3)})\nQ(X*) = ${f(X).toFixed(3)}`;
-    else area.innerHTML += `\nX* = (${X.x1.toFixed(3)}, ${X.x2.toFixed(3)}, ${X.x3.toFixed(3)}, ${X.x4.toFixed(3)})\nQ(X*) = ${f(X).toFixed(3)}\n`;
+function checkByLimitX(X, l) {
+    if (X.x1 < l[0] || X.x1 > l[1]) return false;
+    return true;
 }
 
-function exploratorySearch(f, X, d, n, c) {
-    let intermediatePoint;
-    if (c == 2) intermediatePoint = new Point([X.x1, X.x2]);
-    else if (c == 4) intermediatePoint = new Point([X.x1, X.x2, X.x3, X.x4]);
-    intermediatePoint[`x${n}`] += d;
+function checkByLimitY(X, l) {
+    if (X.x2 < l[0] || X.x2 > l[1]) return false;
+    return true;
+}
 
-    if (f(intermediatePoint) < f(X)) return intermediatePoint;
-    else {
-        intermediatePoint[`x${n}`] -= 2 * d;
-        if (f(intermediatePoint) < f(X)) return intermediatePoint;
-        return X;
+function checkByLimits(X, l) {
+    if (l != undefined) {
+        if (!checkByLimitX(X, l) || !checkByLimitY(X, l)) return false;
     }
+    return true;
 }
 
-function nelder_mead(f, X, eps, alpha, beta, gamma) {
-    let area = document.getElementsByTagName('textarea')[1];
-    area.innerHTML = `Начало работы алгоритма\n\n`;
-
-    let step = 1, error = 1, coordinates = X[0].getCoordinates();
-
-    do {
-        X.sort((p1, p2) => f(p1) - f(p2));
-
-        let bestPoint = X[0].getClone();
-            goodPoint = X[1].getClone();
-            worstPoint = X[2].getClone();
-
-        if (coordinates == 2) {
-            area.innerHTML += `X${step} = (${bestPoint.x1.toFixed(2)}, ${bestPoint.x2.toFixed(2)}) Q(X${step}) = ${f(bestPoint).toFixed(2)}\n`;
+function getText(X, k, f) {
+    let coordinates = X.getCoordinates();
+    if (k == "*") {
+        let string = `\nX* = (`;
+        for (let i = 1; i < coordinates; i++) {
+            string += `${X[`x${i}`].toFixed(3)}, `;
         }
-        else {
-            area.innerHTML += `X${step} = (${bestPoint.x1.toFixed(2)}, ${bestPoint.x2.toFixed(2)}, ${bestPoint.x3.toFixed(2)}, ${bestPoint.x4.toFixed(2)}) Q(X${step}) = ${f(bestPoint).toFixed(2)}\n`;
-        }
-
-        let gravityCenter = findCenterOfGravity(goodPoint, bestPoint, coordinates);
-        let reflectedPoint = reflection(worstPoint, gravityCenter, alpha, coordinates);
-
-        if (f(bestPoint) <= f(reflectedPoint) && f(reflectedPoint) <= f(goodPoint)) {
-            worstPoint = reflectedPoint;
-            let newCenter = findCenterOfGravity(worstPoint, gravityCenter, coordinates);
-            if (f(newCenter) < f(worstPoint)) worstPoint = newCenter;
-        }
-
-        else if (f(reflectedPoint) < f(bestPoint)) worstPoint = stretching(f, reflectedPoint, gravityCenter, beta, coordinates);
-
-        else worstPoint = compression(f, reflectedPoint, worstPoint, gravityCenter, gamma);
-
-        step++;
-        error = Math.sqrt((1 / 3) * (Math.pow(f(X[1]) - f(X[0]), 2) + Math.pow(f(X[2]) - f(X[0]), 2)));
-
-        X = [worstPoint, goodPoint, bestPoint];
-    } while (error > eps && step <= 100);
-
-    if (step == 101) area.innerHTML += `Счетчик достиг максимума в 100 шагов. Вероятно, алгоритм расходится.\n`;
-    if (coordinates == 2) area.innerHTML += `\nX* = (${X[2].x1.toFixed(2)}, ${X[2].x2.toFixed(2)})\nQ(X*) = ${f(X[2]).toFixed(2)}`;
-    else area.innerHTML += `\nX* = (${X[2].x1.toFixed(2)}, ${X[2].x2.toFixed(2)}, ${X[2].x3.toFixed(2)}, ${X[2].x4.toFixed(2)})\nQ(X*) = ${f(X[2]).toFixed(2)}`;
-}
-
-function addition(p1, p2) {
-    if (p1.getCoordinates() == 4) return new Point([p1.x1 + p2.x1, p1.x2 + p2.x2, p1.x3 + p2.x3, p1.x4 + p2.x4]);
-    return new Point([p1.x1 + p2.x1, p1.x2 + p2.x2]);
-}
-
-function subtraction(p1, p2) {
-    if (p1.getCoordinates() == 4) return new Point([p1.x1 - p2.x1, p1.x2 - p2.x2, p1.x3 - p2.x3, p1.x4 - p2.x4]);
-    return new Point([p1.x1 - p2.x1, p1.x2 - p2.x2]);
-}
-
-function multiplication(p, v) {
-    if (p.getCoordinates() == 4) return new Point([p.x1 * v, p.x2 * v, p.x3 * v, p.x4 * v]);
-    return new Point([p.x1 * v, p.x2 * v]);
-}
-
-function reflection(point, center, a) {
-    return addition(center, multiplication(subtraction(center, point), a));
-}
-
-function stretching(func, point, center, b) {
-    let stretchedPoint = addition(center, multiplication(subtraction(point, center), b));
-    if (func(stretchedPoint) < func(point)) return stretchedPoint;
-    else return point;
-}
-
-function compression(func, reflPoint, point, center, g) {
-    let intermediatePoint;
-
-    if (func(reflPoint) < func(point)) intermediatePoint = addition(center, multiplication(subtraction(reflPoint, center), g));
-    else intermediatePoint = addition(center, multiplication(subtraction(point, center), g));
-
-    if (func(intermediatePoint) < Math.min(func(point), func(reflPoint))) return intermediatePoint;
-    return point;
-}
-
-function findCenterOfGravity(point1, point2) {
-    return multiplication(addition(point1, point2), 0.5)
+        string += `${X[`x${coordinates}`].toFixed(3)})\nQ* = ${f(X).toFixed(3)}`;
+        return string;
+    }
+    let string = `X${k} = (`;
+    for (let i = 1; i < coordinates; i++) {
+        string += `${X[`x${i}`].toFixed(3)}, `;
+    }
+    string += `${X[`x${coordinates}`].toFixed(3)}) Q${k} = ${f(X).toFixed(3)}\n`;
+    return string;
 }
