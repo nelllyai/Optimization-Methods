@@ -1,4 +1,4 @@
-function nelder_mead(f, X, eps, alpha, beta, gamma, limit) {
+function nelder_mead(f, X, accuracy, reflCoef, stretchCoef, comprCoef, limit) {
     let area = document.getElementsByTagName('textarea')[1];
     area.innerHTML = `Начало работы алгоритма\n\n`;
 
@@ -13,7 +13,7 @@ function nelder_mead(f, X, eps, alpha, beta, gamma, limit) {
         
         area.innerHTML += getText(X[0], step, f);
         let gravityCenter = findCenterOfGravity(goodPoint, bestPoint, limit);
-        let reflectedPoint = reflection(worstPoint, gravityCenter, alpha, limit);
+        let reflectedPoint = reflection(worstPoint, gravityCenter, reflCoef, limit);
 
         if (f(bestPoint) <= f(reflectedPoint) && f(reflectedPoint) <= f(goodPoint)) {
             worstPoint = reflectedPoint;
@@ -21,15 +21,15 @@ function nelder_mead(f, X, eps, alpha, beta, gamma, limit) {
             if (f(newCenter) < f(worstPoint)) worstPoint = newCenter;
         }
 
-        else if (f(reflectedPoint) < f(bestPoint)) worstPoint = stretching(f, reflectedPoint, gravityCenter, beta, limit);
+        else if (f(reflectedPoint) < f(bestPoint)) worstPoint = stretching(f, reflectedPoint, gravityCenter, stretchCoef, limit);
 
-        else worstPoint = compression(f, reflectedPoint, worstPoint, gravityCenter, gamma, limit);
+        else worstPoint = compression(f, reflectedPoint, worstPoint, gravityCenter, comprCoef, limit);
 
         step++;
         error = Math.sqrt((1 / 3) * (Math.pow(f(X[1]) - f(X[0]), 2) + Math.pow(f(X[2]) - f(X[0]), 2)));
 
         X = [worstPoint, goodPoint, bestPoint];
-    } while (error > eps && step <= 100);
+    } while (error > accuracy && step <= 100);
 
     if (step == 101) area.innerHTML += `Счетчик достиг максимума в 100 шагов. Вероятно, алгоритм расходится.\n`;
     area.innerHTML += getText(X[2], "*", f);

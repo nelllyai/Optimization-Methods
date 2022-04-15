@@ -1,4 +1,4 @@
-function hooke_jeeves(f, X, increments, eps, coef, L, limit) {
+function hooke_jeeves(f, X, increments, accuracy, coef, L, limit) {
     let area = document.querySelector("textarea");
     area.innerHTML = `Начало работы алгоритма\n\n`;
 
@@ -25,7 +25,7 @@ function hooke_jeeves(f, X, increments, eps, coef, L, limit) {
         else X = sampleSearch(X, shiftByCoordinate, L);
 
         step++;
-    } while (error > eps && step <= 100);
+    } while (error > accuracy && step <= 100);
 
     if (step == 101) area.innerHTML += `\nСчетчик достиг максимума в 100 шагов. Вероятно, алгоритм расходится.`;
     area.innerHTML += getText(X, "*", f);
