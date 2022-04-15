@@ -10,7 +10,7 @@ function hooke_jeeves(f, X, increments, accuracy, coef, L, limit) {
         let shiftByCoordinate = [];
 
         for (let i = 0; i < coordinates; i++) {
-            shiftByCoordinate.push(exploratorySearch(f, X, increments[i], i + 1, coordinates));
+            shiftByCoordinate.push(exploratorySearch(f, X, increments[i], i + 1));
             if (!checkByLimits(shiftByCoordinate[i], limit)) shiftByCoordinate[i] = X.getClone();
             if (shiftByCoordinate[i][`x${i + 1}`] == X[`x${i + 1}`]) mistake++;
         }
@@ -31,10 +31,10 @@ function hooke_jeeves(f, X, increments, accuracy, coef, L, limit) {
     area.innerHTML += getText(X, "*", f);
 }
 
-function exploratorySearch(f, X, d, n, c) {
-    let intermediatePoint;
-    if (c == 2) intermediatePoint = new Point([X.x1, X.x2]);
-    else if (c == 4) intermediatePoint = new Point([X.x1, X.x2, X.x3, X.x4]);
+function exploratorySearch(f, X, d, n) {
+    let intermediatePoint, coordinates = X.getCoordinates();
+    if (coordinates == 2) intermediatePoint = new Point([X.x1, X.x2]);
+    else if (coordinates == 4) intermediatePoint = new Point([X.x1, X.x2, X.x3, X.x4]);
     intermediatePoint[`x${n}`] += d;
 
     if (f(intermediatePoint) < f(X)) return intermediatePoint;
