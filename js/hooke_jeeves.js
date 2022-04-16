@@ -20,7 +20,6 @@ function hooke_jeeves(f, X, increments, accuracy, coef, L, limit) {
             for (let i = 0; i < coordinates; i++) sum += Math.pow(increments[i], 2);
             error = Math.sqrt(sum);
             for (let i = 0; i < coordinates; i++) increments[i] /= coef;
-            check = false;
         }
         else X = sampleSearch(X, shiftByCoordinate, L);
 
