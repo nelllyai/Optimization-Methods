@@ -50,3 +50,10 @@ button:active {
 form {
   text-align: center;
 }
+
+table {
+  display: inline-block;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  border-radius: 7px;
+}

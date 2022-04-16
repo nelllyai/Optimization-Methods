@@ -32,9 +32,7 @@ function hooke_jeeves(f, X, increments, accuracy, coef, L, limit) {
 }
 
 function exploratorySearch(f, X, d, n) {
-    let intermediatePoint, coordinates = X.getCoordinates();
-    if (coordinates == 2) intermediatePoint = new Point([X.x1, X.x2]);
-    else if (coordinates == 4) intermediatePoint = new Point([X.x1, X.x2, X.x3, X.x4]);
+    let intermediatePoint = X.getClone();
     intermediatePoint[`x${n}`] += d;
 
     if (f(intermediatePoint) < f(X)) return intermediatePoint;
@@ -48,6 +46,7 @@ function exploratorySearch(f, X, d, n) {
 function sampleSearch(X, T, L) {
     let coordinates = T[0].getCoordinates();
     if (coordinates == 2) return new Point([X.x1 + L * (T[0].x1 - X.x1), X.x2 + L * (T[1].x2 - X.x2)]);
+    else if (coordinates == 3) return new Point([X.x1 + L * (T[0].x1 - X.x1), X.x2 + L * (T[1].x2 - X.x2), X.x3 + L * (T[2].x3 - X.x3)]);
     return new Point([X.x1 + L * (T[0].x1 - X.x1), X.x2 + L * (T[1].x2 - X.x2),
                       X.x3 + L * (T[2].x3 - X.x3), X.x4 + L * (T[3].x4 - X.x4)]);
 }

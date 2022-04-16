@@ -37,16 +37,19 @@ function nelder_mead(f, X, accuracy, reflCoef, stretchCoef, comprCoef, limit) {
 
 function addition(p1, p2) {
     if (p1.getCoordinates() == 4) return new Point([p1.x1 + p2.x1, p1.x2 + p2.x2, p1.x3 + p2.x3, p1.x4 + p2.x4]);
+    else if (p1.getCoordinates() == 3) return new Point([p1.x1 + p2.x1, p1.x2 + p2.x2, p1.x3 + p2.x3]);
     return new Point([p1.x1 + p2.x1, p1.x2 + p2.x2]);
 }
 
 function subtraction(p1, p2) {
     if (p1.getCoordinates() == 4) return new Point([p1.x1 - p2.x1, p1.x2 - p2.x2, p1.x3 - p2.x3, p1.x4 - p2.x4]);
+    else if (p1.getCoordinates() == 3) return new Point([p1.x1 - p2.x1, p1.x2 - p2.x2, p1.x3 - p2.x3]);
     return new Point([p1.x1 - p2.x1, p1.x2 - p2.x2]);
 }
 
 function multiplication(p, v) {
     if (p.getCoordinates() == 4) return new Point([p.x1 * v, p.x2 * v, p.x3 * v, p.x4 * v]);
+    else if (p.getCoordinates() == 3) return new Point([p.x1 * v, p.x2 * v, p.x3 * v]);
     return new Point([p.x1 * v, p.x2 * v]);
 }
 

@@ -32,6 +32,10 @@ function four(p) {
     return Math.pow((p.x1 + 10 * p.x2), 2) + 5 * Math.pow((p.x3 - p.x4), 2) + Math.pow((p.x2 - 2 * p.x3), 4) + 10 * Math.pow((p.x1 - p.x4), 4);
 }
 
+function matr(p) {
+    return 2 * Math.pow(p.x1, 2) + 2 * Math.pow(p.x2, 2) + 2 * Math.pow(p.x3, 2) - 2 * p.x1 * p.x2 - 2 * p.x2 * p.x3 + p.x3;
+}
+
 let list = document.getElementsByTagName('ul');
 let tests = document.getElementsByName('test');
 let currentTest = document.querySelector('input[name="test"]:checked').value;
@@ -116,6 +120,25 @@ tests.forEach(function (test) {
                 list[1].children[5].children[0].value = "2";
                 list[1].children[6].children[0].value = "0.5";
                 break;
+
+            case "matrix":
+                list[0].children[0].innerHTML = "X<sup>0</sup> = (-1.2, 1, 0)";
+                list[0].children[1].children[1].value = "1";
+                list[0].children[2].children[1].value = "1";
+                list[0].children[3].children[1].value = "1";
+                list[0].children[4].children[1].value = "0";
+                list[0].children[5].children[0].value = "0.1";
+                list[0].children[6].children[0].value = "2";
+                list[0].children[7].children[0].value = "1";
+
+                list[1].children[0].innerHTML = "X<sup>0</sup> = (-1.2, 1, 0)";
+                list[1].children[1].innerHTML = "X<sup>0</sup> = (-0.2, 1, 0)";
+                list[1].children[2].innerHTML = "X<sup>0</sup> = (-1.2, 2, 0)";
+                list[1].children[3].children[0].value = "0.01";
+                list[1].children[4].children[0].value = "1";
+                list[1].children[5].children[0].value = "3";
+                list[1].children[6].children[0].value = "0.5";
+                break;
         }
     })
 })
@@ -147,6 +170,10 @@ HJstart.onclick = function () {
             Xfirst =  new Point([3, -1, 0, 1]);
             hooke_jeeves(four, Xfirst, [d1, d2, d3, d4], e, a, h);
             break;
+        case "matrix":
+            Xfirst =  new Point([-1.2, 1, 0]);
+            hooke_jeeves(matr, Xfirst, [d1, d2, d3, d4], e, a, h);
+            break;
     }
 }
 
@@ -174,6 +201,10 @@ NMstart.onclick = function () {
         case "coordinates":
             startingPoints = [new Point([3, -1, 0, 1]), new Point([4, -1, 0, 1]), new Point([3, 0, 0, 1])],
             nelder_mead(four, startingPoints, e, a, b, g);
+            break;
+        case "matrix":
+            startingPoints = [new Point([-1.2, 1, 0]), new Point([-0.2, 1, 0]), new Point([-1.2, 2, 0])],
+            nelder_mead(matr, startingPoints, e, a, b, g);
             break;
     }
 }
