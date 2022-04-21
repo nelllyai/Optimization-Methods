@@ -38,7 +38,7 @@
 
 <ol>
   <li>
-    ![alt text]https://github.com/nelllyai/Optimization-Methods/blob/main/testsHJ/Screenshot_1.jpg?raw=true
+    ![alt text](https://github.com/nelllyai/Optimization-Methods/blob/main/testsHJ/Screenshot_1.jpg?raw=true)
   </li>
   <li>
   </li>
