@@ -46,11 +46,11 @@ tests.forEach(function (test) {
         switch (currentTest) {
             case "Rosenbrock":
                 list[0].children[0].innerHTML = "X<sup>0</sup> = (-1.2, 1)";
-                list[0].children[1].children[1].value = "2.3";
+                list[0].children[1].children[1].value = "2.2";
                 list[0].children[2].children[1].value = "1";
                 list[0].children[3].children[1].value = "0";
                 list[0].children[4].children[1].value = "0";
-                list[0].children[5].children[0].value = "0.001";
+                list[0].children[5].children[0].value = "0.00001";
                 list[0].children[6].children[0].value = "2";
                 list[0].children[7].children[0].value = "1";
 
@@ -58,10 +58,10 @@ tests.forEach(function (test) {
                 list[1].children[0].innerHTML = "X<sup>0</sup> = (-1.2, 1)";
                 list[1].children[1].innerHTML = "X<sup>0</sup> = (-0.2, 1)";
                 list[1].children[2].innerHTML = "X<sup>0</sup> = (-1.2, 2)";
-                list[1].children[3].children[0].value = "0.0001";
+                list[1].children[3].children[0].value = "0.00001";
                 list[1].children[4].children[0].value = "1";
                 list[1].children[5].children[0].value = "3";
-                list[1].children[6].children[0].value = "0.3";
+                list[1].children[6].children[0].value = "0.25";
                 break;
 
             case "somefunction":
@@ -70,17 +70,17 @@ tests.forEach(function (test) {
                 list[0].children[2].children[1].value = "1";
                 list[0].children[3].children[1].value = "0";
                 list[0].children[4].children[1].value = "0";
-                list[0].children[5].children[0].value = "0.1";
-                list[0].children[6].children[0].value = "2";
+                list[0].children[5].children[0].value = "0.001";
+                list[0].children[6].children[0].value = "4.2";
                 list[0].children[7].children[0].value = "1";
 
                 list[1].children[0].innerHTML = "X<sup>0</sup> = (-1.2, -1)";
                 list[1].children[1].innerHTML = "X<sup>0</sup> = (-0.2, 1)";
                 list[1].children[2].innerHTML = "X<sup>0</sup> = (-1.2, 0)";
-                list[1].children[3].children[0].value = "0.01";
-                list[1].children[4].children[0].value = "2";
-                list[1].children[5].children[0].value = "2.3";
-                list[1].children[6].children[0].value = "0.1";
+                list[1].children[3].children[0].value = "0.0001";
+                list[1].children[4].children[0].value = "1";
+                list[1].children[5].children[0].value = "2";
+                list[1].children[6].children[0].value = "0.3";
                 break;
 
             case "limit":
@@ -89,14 +89,14 @@ tests.forEach(function (test) {
                 list[0].children[2].children[1].value = "1";
                 list[0].children[3].children[1].value = "0";
                 list[0].children[4].children[1].value = "0";
-                list[0].children[5].children[0].value = "0.1";
+                list[0].children[5].children[0].value = "0.0001";
                 list[0].children[6].children[0].value = "2";
                 list[0].children[7].children[0].value = "1";
 
                 list[1].children[0].innerHTML = "X<sup>0</sup> = (-1.2, 1)";
                 list[1].children[1].innerHTML = "X<sup>0</sup> = (-0.2, 1)";
                 list[1].children[2].innerHTML = "X<sup>0</sup> = (-1.2, 2)";
-                list[1].children[3].children[0].value = "0.01";
+                list[1].children[3].children[0].value = "0.0001";
                 list[1].children[4].children[0].value = "1";
                 list[1].children[5].children[0].value = "3";
                 list[1].children[6].children[0].value = "0.5";
@@ -108,7 +108,7 @@ tests.forEach(function (test) {
                 list[0].children[2].children[1].value = "1";
                 list[0].children[3].children[1].value = "1";
                 list[0].children[4].children[1].value = "1";
-                list[0].children[5].children[0].value = "0.1";
+                list[0].children[5].children[0].value = "0.01";
                 list[0].children[6].children[0].value = "2";
                 list[0].children[7].children[0].value = "1";
 
@@ -125,16 +125,16 @@ tests.forEach(function (test) {
                 list[0].children[0].innerHTML = "X<sup>0</sup> = (-1.2, 1, 0)";
                 list[0].children[1].children[1].value = "1";
                 list[0].children[2].children[1].value = "1";
-                list[0].children[3].children[1].value = "1";
+                list[0].children[3].children[1].value = "0";
                 list[0].children[4].children[1].value = "0";
-                list[0].children[5].children[0].value = "0.1";
+                list[0].children[5].children[0].value = "0.01";
                 list[0].children[6].children[0].value = "2";
                 list[0].children[7].children[0].value = "1";
 
                 list[1].children[0].innerHTML = "X<sup>0</sup> = (-1.2, 1, 0)";
                 list[1].children[1].innerHTML = "X<sup>0</sup> = (-0.2, 1, 0)";
                 list[1].children[2].innerHTML = "X<sup>0</sup> = (-1.2, 2, 0)";
-                list[1].children[3].children[0].value = "0.01";
+                list[1].children[3].children[0].value = "0.0001";
                 list[1].children[4].children[0].value = "1";
                 list[1].children[5].children[0].value = "3";
                 list[1].children[6].children[0].value = "0.5";
@@ -198,8 +198,12 @@ NMstart.onclick = function () {
             startingPoints = [new Point([-1.2, 1]), new Point([-0.2, 1]), new Point([-1.2, 2])],
             nelder_mead(fun, startingPoints, e, a, b, g, [-1.2, 1, -1, 1]);
             break;
+        // case "coordinates":
+        //     startingPoints = [new Point([3, -1, 0, 1]), new Point([4, -1, 0, 1]), new Point([3, 0, 0, 1])],
+        //     nelder_mead(four, startingPoints, e, a, b, g);
+        //     break;
         case "coordinates":
-            startingPoints = [new Point([3, -1, 0, 1]), new Point([4, -1, 0, 1]), new Point([3, 0, 0, 1])],
+            startingPoints = [new Point([3, -1, 0, 1]), new Point([3, 0, 0, 1]), new Point([0, 0, 1, 1])],
             nelder_mead(four, startingPoints, e, a, b, g);
             break;
         case "matrix":

@@ -29,9 +29,9 @@ function nelder_mead(f, X, accuracy, reflCoef, stretchCoef, comprCoef, limit) {
         error = Math.sqrt((1 / 3) * (Math.pow(f(X[1]) - f(X[0]), 2) + Math.pow(f(X[2]) - f(X[0]), 2)));
 
         X = [worstPoint, goodPoint, bestPoint];
-    } while (error > accuracy && step <= 100);
+    } while (error > accuracy && step <= 5000);
 
-    if (step == 101) area.innerHTML += `Счетчик достиг максимума в 100 шагов. Вероятно, алгоритм расходится.\n`;
+    if (step == 1001) area.innerHTML += `Счетчик достиг максимума в 1000 шагов. Вероятно, алгоритм расходится.\n`;
     area.innerHTML += getText(X[2], "*", f);
 }
 
