@@ -112,10 +112,10 @@ tests.forEach(function (test) {
                 list[0].children[6].children[0].value = "2";
                 list[0].children[7].children[0].value = "1";
 
-                list[1].children[0].innerHTML = "X<sup>0</sup> = (3, -1, 0, 1)";
-                list[1].children[1].innerHTML = "X<sup>0</sup> = (4, -1, 0, 1)";
-                list[1].children[2].innerHTML = "X<sup>0</sup> = (3, 0, 0, 1)";
-                list[1].children[3].children[0].value = "0.01";
+                list[1].children[0].innerHTML = "X<sup>0</sup> = (0.5, 0, 0, 0)";
+                list[1].children[1].innerHTML = "X<sup>0</sup> = (-0.5, 0, 0, 0.5)";
+                list[1].children[2].innerHTML = "X<sup>0</sup> = (-0.5, 0, 0.5, 0)";
+                list[1].children[3].children[0].value = "0.00001";
                 list[1].children[4].children[0].value = "1";
                 list[1].children[5].children[0].value = "2";
                 list[1].children[6].children[0].value = "0.5";
@@ -198,12 +198,8 @@ NMstart.onclick = function () {
             startingPoints = [new Point([-1.2, 1]), new Point([-0.2, 1]), new Point([-1.2, 2])],
             nelder_mead(fun, startingPoints, e, a, b, g, [-1.2, 1, -1, 1]);
             break;
-        // case "coordinates":
-        //     startingPoints = [new Point([3, -1, 0, 1]), new Point([4, -1, 0, 1]), new Point([3, 0, 0, 1])],
-        //     nelder_mead(four, startingPoints, e, a, b, g);
-        //     break;
         case "coordinates":
-            startingPoints = [new Point([3, -1, 0, 1]), new Point([3, 0, 0, 1]), new Point([0, 0, 1, 1])],
+            startingPoints = [new Point([0.5, 0, 0, 0]), new Point([-0.5, 0, 0, 0.5]), new Point([-0.5, 0, 0.5, 0])],
             nelder_mead(four, startingPoints, e, a, b, g);
             break;
         case "matrix":

@@ -24,9 +24,9 @@ function hooke_jeeves(f, X, increments, accuracy, coef, L, limit) {
         else X = sampleSearch(X, shiftByCoordinate, L);
 
         step++;
-    } while (error > accuracy && step <= 7000);
+    } while (error > accuracy && step <= 10000);
 
-    if (step == 1001) area.innerHTML += `\nСчетчик достиг максимума в 1000 шагов. Вероятно, алгоритм расходится.`;
+    if (step == 10001) area.innerHTML += `\nСчетчик достиг максимума в 10000 шагов. Вероятно, алгоритм расходится.`;
     area.innerHTML += getText(X, "*", f);
 }
 
