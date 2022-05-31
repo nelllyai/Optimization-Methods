@@ -40,7 +40,7 @@ _Никитина Нелли, гр. 381907-1_
 <ol>
   <li>
     100(x<sub>1</sub><sup>2</sup> - x<sub>2</sub>)<sup>2</sup> + (1 - x<sub>1</sub>)<sup>2</sup>
-    <p><img src="/testsHJ/1.jpg" width="600"></p>
+    <p><img src="/testsHJ/Screenshot_1.jpg" width="600"></p>
   </li>
   <li>
     100(x<sub>2</sub> - x<sub>1</sub><sup>3</sup>)<sup>2</sup> + (1 - x<sub>1</sub>)<sup>2</sup>
